@@ -101,15 +101,18 @@ function drawHammerTime() {
     }
 }
 
-function drawPlayer() {
-    if (isInvincible) {
-        // When invincible, use the playerImage for the pink square
-        ctx.drawImage(playerImage, pinkSquare.x, pinkSquare.y, pinkSquare.size, pinkSquare.size);
-    } else {
-        // When not invincible, use the playerImage for the normal player representation
-        ctx.drawImage(playerImage, playerX, playerY, playerSize, playerSize);
+    function drawPlayer() {
+        if (isInvincible) {
+            // Draw the pink square
+            ctx.fillStyle = 'pink';
+            ctx.fillRect(pinkSquare.x, pinkSquare.y, pinkSquare.size, pinkSquare.size);
+        } else {
+            // Draw the white square
+            ctx.fillStyle = '#fff';
+            ctx.fillRect(playerX, playerY, playerSize, playerSize);
+        }
+        
     }
-}
     
 
     function drawSolidObjects() {
