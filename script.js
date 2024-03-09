@@ -50,7 +50,7 @@ let lastConsoleLogMessage = "";
 
 
 const dkImage = new Image();
-dkImage.src = 'file:///C:/Donkey Kong/dk.png';
+dkImage.src = 'dk.png';
 // Function to log a message and store it
 
 function logAndStore(message) {
@@ -155,7 +155,7 @@ function drawHammerTime() {
     function drawDonkeyKong() {
         greenRectangles.forEach(rectangle => {
             const image = new Image();
-            image.src = 'file:///C:/Donkey Kong/wp.png'; // Use wp.png for all rectangles
+            image.src = 'wp.png'; // Use wp.png for all rectangles
             ctx.drawImage(image, rectangle.x, rectangle.y, 40, 40);
         });
 
