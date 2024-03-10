@@ -60,8 +60,19 @@ function logAndStore(message) {
 
 function drawDonkeyKong() {
     if (isDonkeyKongVisible) {
-        // Draw Donkey Kong only if he is visible
-        ctx.drawImage(dkImage, playerX + playerSize - 60, playerY - 60, 60, 60);
+        // Calculate the position for the "🐒" emoji
+        const emojiSize = 60; // The size of the emoji square
+        const fontSize = emojiSize * 0.7; // Adjust the font size to fit the emoji within the square
+        const verticalAdjustment = 10; // Adjustment to compensate for the emoji's position
+
+        // Position the "🐒" emoji
+        const emojiX = canvas.width - 100 - 60; // Adjusted position for level 2 and level 3
+        const emojiY = 90;
+
+        // Draw the "🐒" emoji
+        ctx.font = `${fontSize}px Arial`;
+        ctx.fillStyle = 'black';
+        ctx.fillText('🐒', emojiX + (60 - emojiSize) / 2, emojiY + (60 - emojiSize) / 2 + fontSize / 2 - verticalAdjustment);
     }
 }
 
@@ -101,18 +112,35 @@ function drawHammerTime() {
     }
 }
 
-    function drawPlayer() {
-        if (isInvincible) {
-            // Draw the pink square
-            ctx.fillStyle = 'pink';
-            ctx.fillRect(pinkSquare.x, pinkSquare.y, pinkSquare.size, pinkSquare.size);
-        } else {
-            // Draw the white square
-            ctx.fillStyle = '#fff';
-            ctx.fillRect(playerX, playerY, playerSize, playerSize);
-        }
-        
+
+
+let emojiFlashCounter = 0; // Counter to toggle the emoji color
+function drawPlayer() {
+    const emojiSize = 40; // The size of the emoji square
+    const fontSize = emojiSize * 1.50; // Adjust the font size to fit the emoji within the square
+    const verticalAdjustment = -20; // Adjustment to compensate for the emoji's position
+
+    if (isInvincible) {
+        // Draw the pink square
+        ctx.fillStyle = 'black';
+        ctx.fillRect(pinkSquare.x, pinkSquare.y, pinkSquare.size, pinkSquare.size);
+        // Determine the fill color based on the counter
+        ctx.fillStyle = emojiFlashCounter % 2 === 0 ? 'white' : 'red';
+        // Draw the scarab emoji with adjusted vertical position
+        ctx.font = `${fontSize}px Arial`;
+        ctx.fillText('𓆣', pinkSquare.x + (pinkSquare.size - emojiSize) / 2, pinkSquare.y + (pinkSquare.size - emojiSize) / 2 + fontSize / 2 - verticalAdjustment);
+        // Increment the counter
+        emojiFlashCounter++;
+    } else {
+        // Draw the white square
+        ctx.fillStyle = '#000000';
+        ctx.fillRect(playerX, playerY, playerSize, playerSize);
+        // Draw the scarab emoji with adjusted vertical position
+        ctx.font = `${fontSize}px Arial`;
+        ctx.fillStyle = 'white';
+        ctx.fillText('𓆣', playerX + (playerSize - emojiSize) / 2, playerY + (playerSize - emojiSize) / 2 + fontSize / 2 - verticalAdjustment);
     }
+}
     
 
     function drawSolidObjects() {
@@ -244,9 +272,10 @@ function drawPurpleSquare() {
 
     function draw() {
         clearCanvas();
-        drawDonkeyKong();
-        drawPlayer(); // This will now correctly draw the pink square when the player is invincible
         drawSolidObjects();
+        drawBlueSquare(); // Ensure this is called before drawDonkeyKong
+        drawDonkeyKong(); // This will now correctly draw the "🐒" emoji on top of the blue square
+        drawPlayer(); // This will now correctly draw the pink square when the player is invincible
         drawLives();
         drawLevel();
         drawCountdown();
@@ -445,6 +474,7 @@ function climbUp() {
             playerX = pinkSquare.x;
             playerY = pinkSquare.y;
             isInvincible = true; // Update the player's invincibility state
+            isPinkSquareVisible = true; // Make the pink square visible
         
             draw(); // Ensure the draw function is called to update the canvas
         }
